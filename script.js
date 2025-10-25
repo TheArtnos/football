@@ -33,17 +33,9 @@ const renderUi = function (data) {
 };
 
 const getMatch = function () {
-  fetch("https://api.football-data.org/v4/matches", {
-    headers: { "X-Auth-Token": "8f98efd8340543d693a925ecd26673b4" },
-  })
-    .then((res) => {
-      console.log(res);
-
-      return res.json();
-    })
+  fetch("/api/matches")
+    .then((res) => res.json())
     .then((data) => {
-      console.log(data);
-
       data.matches.forEach((games) => {
         renderUi(games);
       });
