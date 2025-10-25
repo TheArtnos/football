@@ -1,177 +1,151 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Games Today</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Today's Matches</title>
     <style>
       :root {
         --bg: #0f1724;
-        --card: #0b1220;
-        --muted: #98a0b3;
+        --card: #1a2332;
         --accent: #4f46e5;
-        --glass: rgba(255, 255, 255, 0.03);
-        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
-          "Helvetica Neue", Arial;
+        --muted: #98a0b3;
+        --text: #e6eef8;
+        font-family: "Segoe UI", sans-serif;
       }
-      * {
-        box-sizing: border-box;
-      }
+
       body {
         margin: 0;
         background: linear-gradient(180deg, var(--bg), #071029);
-        color: #e6eef8;
-        min-height: 100vh;
-        padding: 28px;
+        color: var(--text);
+        padding: 20px;
       }
 
-      .wrap {
-        max-width: 980px;
-        margin: 0 auto;
+      .container {
+        max-width: 900px;
+        margin: auto;
       }
+
       header {
         display: flex;
-        gap: 16px;
         align-items: center;
         justify-content: space-between;
+        margin-bottom: 30px;
       }
-      .brand {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-      }
+
       .logo {
-        width: 56px;
-        height: 56px;
-        border-radius: 12px;
         background: linear-gradient(135deg, var(--accent), #06b6d4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
         color: white;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 12px 18px;
+        border-radius: 12px;
       }
+
       h1 {
         margin: 0;
-        font-size: 20px;
+        font-size: 24px;
       }
+
       .sub {
+        font-size: 14px;
         color: var(--muted);
-        font-size: 13px;
       }
 
       .card {
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.02),
-          rgba(255, 255, 255, 0.01)
-        );
+        background-color: var(--card);
         border-radius: 14px;
-        padding: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.03);
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       }
-      .games-list {
+
+      .match {
         display: flex;
         flex-direction: column;
         gap: 12px;
-        margin-top: 8px;
+        background-color: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
       }
-      .game {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 12px;
-        border-radius: 10px;
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.01),
-          transparent
-        );
-        border: 1px solid rgba(255, 255, 255, 0.02);
-      }
+
       .teams {
         display: flex;
-        gap: 12px;
+        justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
       }
+
       .team {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        min-width: 120px;
+        gap: 8px;
+        flex: 1 1 40%;
       }
+
       .team img {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        margin-bottom: 4px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        width: 40px;
+        height: 40px;
       }
-      .team .name {
-        font-weight: 700;
+
+      .team-name {
+        font-weight: bold;
       }
-      .vs {
-        font-size: 12px;
-        color: var(--muted);
+
+      .score {
+        font-size: 18px;
+        font-weight: bold;
+        color: #58a6ff;
+        text-align: center;
+        flex: 1 1 100%;
       }
+
       .meta {
-        text-align: right;
-      }
-      .time {
-        font-weight: 600;
-      }
-      .status {
-        font-size: 12px;
+        font-size: 13px;
         color: var(--muted);
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
       }
-      .status {
-  font-weight: bold;
-  margin-top: 5px;
-}
 
-.status:contains("در حال برگزاری") {
-  color: green;
-}
-.status:contains("هنوز شروع نشده") {
-  color: orange;
-}
-.status:contains("تمام شد") {
-  color: gray;
-}
+      @media (max-width: 600px) {
+        .teams {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
 
+        .team {
+          justify-content: center;
+        }
+
+        .score {
+          font-size: 20px;
+          margin: 8px 0;
+        }
+
+        .meta {
+          align-items: center;
+          text-align: center;
+        }
+      }
     </style>
   </head>
   <body>
-    <div class="wrap">
+    <div class="container">
       <header>
-        <div class="brand">
-          <div class="logo">G</div>
-          <div>
-            <h1>Games Today</h1>
-            <div class="sub">List of football matches taking place today</div>
-          </div>
+        <div class="logo">⚽️</div>
+        <div>
+          <h1>Today's Matches</h1>
+          <div class="sub">Live football matches and results</div>
         </div>
       </header>
-      <br />
-      <main>
-        <div class="card">
-          <div
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            "
-          >
-            <div style="font-weight: 700">Match List</div>
-            <div class="muted">Sorted by start time</div>
-          </div>
 
-          <div class="games-list">
-            
-            </div>
-          </div>
-        </div>
-      </main>
+      <div class="card">
+    
+        
     </div>
     <script src="script.js"></script>
   </body>

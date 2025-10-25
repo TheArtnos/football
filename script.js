@@ -1,38 +1,58 @@
-const gameList = document.querySelector(".games-list");
+const gameList = document.querySelector(".card");
+const score = document.querySelector(".score");
+
 const renderUi = function (data) {
   const utcData = data.utcDate;
   const localDate = new Date(utcData);
   const options = {
-    month: "numeric", // Oct
-    day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
   };
   const date = new Intl.DateTimeFormat("en-us", options).format(localDate);
+  // /////////////////////////////
+  // ${data.score.fullTime.home} - ${data.score.fullTime.away}
+  const homeGoals = data.score.fullTime.home;
+  const awayGoals = data.score.fullTime.away;
+
+  const scoreText =
+    homeGoals === null || awayGoals === null
+      ? date
+      : `${data.score.fullTime.home} - ${data.score.fullTime.away}`;
+
+  /////////////////////////////////
   const html = `
-  <div class="game">
-    <div class="teams">
-      <div class="team">
-        <img src="${data.homeTeam.crest}" alt="${data.homeTeam.name} logo" />
-        <div class="name">${data.homeTeam.name}</div>
-      </div>
-      <div class="vs">vs</div>
-      <div class="team">
-        <img src="${data.awayTeam.crest}" alt="${data.awayTeam.name} logo" />
-        <div class="name">${data.awayTeam.shortName}</div>
-      </div>
-    </div>
-    <div class="meta">
-      <div class="time">${date}</div>
-      <div class="status">${data.status}</div>
-      <div class="league">League: ${data.area.name}</div>
-    </div>
-  </div>
+        <div class="match">
+          <div class="teams">
+            <div class="team">
+              <img
+                src="${data.homeTeam.crest}"
+                alt="Logo"
+              />
+              <div class="team-name">${data.homeTeam.shortName}</div>
+            </div>
+            <div class="score">${scoreText}</div>
+            <div class="team">
+              <img
+                src="${data.awayTeam.crest}"
+                alt="logo"
+              />
+              <div class="team-name">${data.awayTeam.shortName}</div>
+            </div>
+          </div>
+          <div class="meta">
+            <div>⏰ ${date}</div>
+            <div>Status: ${data.status}</div>
+            <div>League: ${data.competition.name}</div>
+          </div>
+        </div>
             `;
   gameList.insertAdjacentHTML("beforeend", html);
 };
-
+const clearGames = () => {
+  gameList.innerHTML = "";
+};
 const getMatch = function () {
+  clearGames();
   fetch("/api/matches")
     .then((res) => res.json())
     .then((data) => {
@@ -42,3 +62,4 @@ const getMatch = function () {
     });
 };
 getMatch();
+setInterval(getMatch, 60000);
