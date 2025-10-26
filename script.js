@@ -102,8 +102,13 @@ const clearGames = () => {
 const getMatch = function () {
   clearGames();
   fetch("/api/matches.js")
-    .then((res) => res.json())
+    .then((res) => {
+      console.log(res);
+      return res.json();
+    })
     .then((data) => {
+      console.log(data);
+      
       data.matches.forEach((games) => {
         console.log(games)
         renderUi(games);
