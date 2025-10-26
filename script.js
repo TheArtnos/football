@@ -88,7 +88,7 @@ const renderUi = function (data) {
         </div>
         <div>
             <span style="color: #6366f1;">⏰</span>
-            <span>${textStatus} <span class="min">${matchMinute}</span>></span>
+            <span>${textStatus} <span class="min">${matchMinute}</span></span>
         </div>
     </div>
 </div>
