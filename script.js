@@ -12,11 +12,12 @@ const renderUi = function (data) {
   const now = new Date();
   // /////////////////////////////
   let matchMinute = "";
+  let liveMinuteCalculation = "";
   if (data.status === "IN_PLAY") {
     const diffInMs = now - localDate;
     const diffInMinutes = Math.floor(diffInMs / 60000);
 
-    matchMinute = `${diffInMinutes}`;
+    liveMinuteCalculation = `${diffInMinutes}'`;
   }
 
   // ///////////////////////////////////
@@ -38,19 +39,23 @@ const renderUi = function (data) {
   switch (statusGame) {
     case "IN_PLAY":
       textStatus = "Live";
+      matchMinute = liveMinuteCalculation;
       break;
     case "PAUSED":
       textStatus = "HT"; // Half Time
       matchMinute = 45
       break;
     case "TIMED":
-      textStatus = "Not Started"
+      textStatus = "Not Started";
+      matchMinute = ""
       break;
     case "FINISHED":
       textStatus = "FT"; // Full Time
+      matchMinute = ""
       break;
     default:
       textStatus = "Unknown";
+      matchMinute = ""
   }
 
   /////////////////////////////////
