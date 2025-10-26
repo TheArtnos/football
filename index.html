@@ -4,231 +4,255 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Today's Matches - Final UX Layout</title>
-    <style>
-      :root {
-        /* Adjusted Variables for better contrast and vibrancy */
-        --bg: #0d121c; /* Darker background */
-        --card: #181f2a; /* Slightly darker card */
-        --accent: #6366f1; /* Brighter accent blue/purple */
-        --muted: #aab5c7; /* Lighter mute for better readability */
-        --text: #ffffff; /* Pure white text for max contrast */
-        --success: #10b981; /* Green for Live/Finished */
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-      }
+<style>
+  :root {
+    /* Adjusted Variables for better contrast and vibrancy */
+    --bg: #0d121c; /* Darker background */
+    --card: #181f2a; /* Slightly darker card */
+    --accent: #6366f1; /* Brighter accent blue/purple */
+    --muted: #aab5c7; /* Lighter mute for better readability */
+    --text: #ffffff; /* Pure white text for max contrast */
+    --success: #10b981; /* Green for Live/Finished */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  }
 
-      body {
-        margin: 0;
-        background: linear-gradient(180deg, var(--bg) 0%, #00040f 100%);
-        color: var(--text);
-        padding: 24px;
-        min-height: 100vh;
-      }
+  body {
+    margin: 0;
+    background: linear-gradient(180deg, var(--bg) 0%, #00040f 100%);
+    color: var(--text);
+    padding: 24px;
+    min-height: 100vh;
+  }
 
-      .container {
-        max-width: 950px;
-        margin: auto;
-      }
+  .container {
+    max-width: 950px;
+    margin: auto;
+  }
 
-      header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 40px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding-bottom: 20px;
-      }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 20px;
+  }
 
-      .logo {
-        background: linear-gradient(135deg, var(--accent), #0ea5e9);
-        color: white;
-        font-weight: 900;
-        font-size: 24px;
-        padding: 10px 16px;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.5);
-      }
+  .logo {
+    background: linear-gradient(135deg, var(--accent), #0ea5e9);
+    color: white;
+    font-weight: 900;
+    font-size: 24px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.5);
+  }
 
-      h1 {
-        margin: 0;
-        font-size: 28px;
-        color: var(--text);
-        font-weight: 700;
-      }
+  h1 {
+    margin: 0;
+    font-size: 28px;
+    color: var(--text);
+    font-weight: 700;
+  }
 
-      .sub {
-        font-size: 15px;
-        color: var(--muted);
-      }
+  .sub {
+    font-size: 15px;
+    color: var(--muted);
+  }
 
-      .card {
-        background-color: var(--card);
-        border-radius: 20px;
-        padding: 25px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
-      }
+  .card {
+    background-color: var(--card);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
 
-      /* --- Match Component UX Improvements --- */
+  /* --- Match Component UX Improvements --- */
 
-      .match {
-        display: flex;
+  .match {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: var(--card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease; 
+  }
+  
+  .match:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 0 2px var(--accent);
+  }
+
+  /* Status Indicator */
+  .match-status {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: white;
+    background-color: var(--success);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.5);
+  }
+  
+  .teams {
+    display: flex;
+    align-items: center;
+    /* Use space-between to push teams to the edges */
+    justify-content: space-between; 
+    padding: 10px 0; 
+    flex-wrap: nowrap;
+  }
+
+  .team {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* Allows team 1 to stick to the left and team 2 to the right */
+    flex-grow: 0; 
+    min-width: 0; 
+    /* Ensure Team 1 is left-aligned */
+    justify-content: flex-start;
+  }
+  
+  .team:last-child {
+    /* Ensure Team 2 is right-aligned in its container */
+    justify-content: flex-end; 
+    /* Reverse the order of elements within Team 2 so the logo is on the right */
+    flex-direction: row-reverse;
+  }
+  
+  .team-name {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.2;
+    /* Force text alignment inside the flex container for Team 2 */
+    text-align: right; 
+  }
+  
+  .team:first-child .team-name {
+      text-align: left;
+  }
+
+  .team img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+  }
+
+  /* New: Centralized Score Display */
+  .score-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 120px; 
+  }
+
+  .score {
+    font-size: 26px;
+    font-weight: 800;
+    color: #818cf8;
+    background-color: rgba(99, 102, 241, 0.1);
+    padding: 10px 18px;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 90px;
+    box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
+  }
+  
+  .meta {
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.05);
+  }
+  
+  .meta > div {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+  }
+  
+  /* FIX: Styling for the Match Minute Badge (Desktop/General) */
+  .min {
+      /* Subtle high-contrast badge */
+      background-color: var(--accent); 
+      color: var(--text);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 2px 8px;
+      border-radius: 12px; 
+      margin-left: 4px; /* Space it out from the status text */
+  }
+  /* Hide the minute if it's empty (i.e., not a 'Live' match) */
+  .meta > div:nth-child(2) span:nth-child(2) .min:empty {
+      display: none;
+  }
+
+  /* --- Mobile Optimization (Fixed Team Layout) --- */
+
+  @media (max-width: 650px) {
+    
+    .teams {
         flex-direction: column;
+        align-items: stretch;
         gap: 15px;
-        background-color: var(--card);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 20px;
-        position: relative;
-        transition: transform 0.2s ease, box-shadow 0.2s ease; 
-      }
-      
-      .match:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 0 2px var(--accent);
-      }
+    }
 
-      /* Status Indicator */
-      .match-status {
-        position: absolute;
-        top: -12px;
-        right: 20px;
-        padding: 4px 10px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: white;
-        background-color: var(--success);
-        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.5);
-      }
-      
-      .teams {
-        display: flex;
-        align-items: center;
-        /* Use space-between to push teams to the edges */
-        justify-content: space-between; 
-        padding: 10px 0; 
-        flex-wrap: nowrap;
-      }
-
-      .team {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        /* Allows team 1 to stick to the left and team 2 to the right */
-        flex-grow: 0; 
-        min-width: 0; 
-        /* Ensure Team 1 is left-aligned */
-        justify-content: flex-start;
-      }
-      
-      .team:last-child {
-        /* Ensure Team 2 is right-aligned in its container */
-        justify-content: flex-end; 
-        /* Reverse the order of elements within Team 2 so the logo is on the right */
-        flex-direction: row-reverse;
-      }
-      
-      .team-name {
-        font-weight: 600;
-        font-size: 16px;
-        line-height: 1.2;
-        /* Force text alignment inside the flex container for Team 2 */
-        text-align: right; 
-      }
-      
-      .team:first-child .team-name {
-          text-align: left;
-      }
-
-      .team img {
-        width: 45px;
-        height: 45px;
-        object-fit: cover;
-        flex-shrink: 0;
-      }
-
-      /* New: Centralized Score Display */
-      .score-container {
-        display: flex;
-        align-items: center;
+    /* Score remains at the top for clarity */
+    .score-container {
+        order: -1;
+        flex: 1 1 100%;
         justify-content: center;
-        flex: 0 0 120px; 
-      }
-
-      .score {
-        font-size: 26px;
-        font-weight: 800;
-        color: #818cf8;
-        background-color: rgba(99, 102, 241, 0.1);
-        padding: 10px 18px;
-        border-radius: 12px;
-        text-align: center;
-        min-width: 90px;
-        box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
-      }
-      
-      .meta {
-        font-size: 14px;
-        color: var(--muted);
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 10px;
-        border-top: 1px dashed rgba(255, 255, 255, 0.05);
-      }
-      
-      .meta > div {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-      }
-
-      /* --- Mobile Optimization (Fixed Team Layout) --- */
-
-      @media (max-width: 650px) {
-        
-        .teams {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 15px;
-        }
-
-        /* Score remains at the top for clarity */
-        .score-container {
-            order: -1;
-            flex: 1 1 100%;
-            justify-content: center;
-            margin-bottom: 10px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Team 1 and Team 2 are now both left-aligned in mobile view */
-        .team, .team:last-child {
-            justify-content: flex-start; 
-            flex-direction: row; /* Logo on the left for both */
-        }
-        
-        .team-name {
-            text-align: left; /* Ensure both names are left-aligned */
-        }
-        
-        /* Ensure meta is centered in mobile */
-        .meta {
-          flex-direction: column;
-          align-items: center;
-          gap: 8px;
-        }
-      }
-       .min {
-          background-color: green;
-          padding: 0.5rem;
-          border-radius: 50%;
-        }
-    </style>
+        margin-bottom: 10px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Team 1 and Team 2 are now both left-aligned in mobile view */
+    .team, .team:last-child {
+        justify-content: flex-start; 
+        flex-direction: row; /* Logo on the left for both */
+    }
+    
+    .team-name {
+        text-align: left; /* Ensure both names are left-aligned */
+    }
+    
+    /* Ensure meta is centered in mobile */
+    .meta {
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    /* FIX: Revert .min to look like standard text in mobile meta section */
+    .min {
+      background-color: transparent; /* Remove background */
+      padding: 0; /* Remove padding */
+      border-radius: 0; /* Remove border-radius */
+      color: var(--text); /* Make it stand out with text color */
+      font-size: 14px; /* Match surrounding text size */
+      font-weight: 700; /* Keep it bold */
+      margin-left: 4px;
+    }
+  }
+</style>
   </head>
   <body>
     <div class="container">
