@@ -9,10 +9,14 @@ const renderUi = function (data) {
     minute: "2-digit",
   };
   const date = new Intl.DateTimeFormat("en-us", options).format(localDate);
+
   // /////////////////////////////
-  // ${data.score.fullTime.home} - ${data.score.fullTime.away}
+
   const homeGoals = data.score.fullTime.home;
   const awayGoals = data.score.fullTime.away;
+
+  const goalAway = awayGoals === true ? homeGoals : "";
+  const goalHome = homeGoals === true ? homeGoals : "";
 
   const scoreText =
     homeGoals === null || awayGoals === null
@@ -53,7 +57,7 @@ const renderUi = function (data) {
                 src="${data.homeTeam.crest}"
                 alt="Logo"
             />
-            <div class="team-name">${data.homeTeam.shortName}</div>
+            <div class="team-name">${data.homeTeam.shortName}  <span>${homeGoals}</span></div>
         </div>
         
         <div class="score-container">
@@ -65,7 +69,7 @@ const renderUi = function (data) {
                 src="${data.awayTeam.crest}"
                 alt="logo"
             />
-            <div class="team-name">${data.awayTeam.shortName}</div>
+            <div class="team-name">${data.awayTeam.shortName}  <span>${goalAway}</span></div>
         </div>
     </div>
     
