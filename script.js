@@ -15,9 +15,8 @@ const renderUi = function (data) {
   const homeGoals = data.score.fullTime.home;
   const awayGoals = data.score.fullTime.away;
 
-  const goalAway = awayGoals === true ? homeGoals : "";
-  const goalHome = homeGoals === true ? homeGoals : "";
-
+  const goalAway = awayGoals === true ? homeGoals : "0";
+  const goalHome = homeGoals === true ? homeGoals : "0";
   const scoreText =
     homeGoals === null || awayGoals === null
       ? date
@@ -57,7 +56,7 @@ const renderUi = function (data) {
                 src="${data.homeTeam.crest}"
                 alt="Logo"
             />
-            <div class="team-name">${data.homeTeam.shortName}  <span>${homeGoals}</span></div>
+            <div class="team-name">${data.homeTeam.shortName}  (<span style="color: #ef4444">${goalHome}</span>)</div>
         </div>
         
         <div class="score-container">
@@ -69,7 +68,7 @@ const renderUi = function (data) {
                 src="${data.awayTeam.crest}"
                 alt="logo"
             />
-            <div class="team-name">${data.awayTeam.shortName}  <span>${goalAway}</span></div>
+            <div class="team-name">${data.awayTeam.shortName}  (<span style="color: #ef4444">${goalAway}</span>)</div>
         </div>
     </div>
     
