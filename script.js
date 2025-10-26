@@ -15,8 +15,8 @@ const renderUi = function (data) {
   const homeGoals = data.score.fullTime.home;
   const awayGoals = data.score.fullTime.away;
 
-  const goalAway = awayGoals === true ? homeGoals : "";
-  const goalHome = homeGoals === true ? homeGoals : "";
+  const goalAway = awayGoals ? homeGoals : "";
+  const goalHome = homeGoals ? homeGoals : "";
   const scoreText =
     homeGoals === null || awayGoals === null
       ? date
@@ -94,8 +94,6 @@ const getMatch = function () {
   fetch("/api/matches.js")
     .then((res) => res.json())
     .then((data) => {
-      console.log(data.matches);
-
       data.matches.forEach((games) => {
         renderUi(games);
       });
