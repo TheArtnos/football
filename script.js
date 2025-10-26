@@ -16,7 +16,7 @@ const renderUi = function (data) {
     const diffInMs = now - localDate;
     const diffInMinutes = Math.floor(diffInMs / 60000);
 
-    matchMinute = `${diffInMinutes + 1}`;
+    matchMinute = `${diffInMinutes}`;
   }
 
   // ///////////////////////////////////
@@ -41,9 +41,10 @@ const renderUi = function (data) {
       break;
     case "PAUSED":
       textStatus = "HT"; // Half Time
+      matchMinute = 45
       break;
     case "TIMED":
-      textStatus = "Not Started";
+      textStatus = "Not Started"
       break;
     case "FINISHED":
       textStatus = "FT"; // Full Time
