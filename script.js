@@ -9,8 +9,17 @@ const renderUi = function (data) {
     minute: "2-digit",
   };
   const date = new Intl.DateTimeFormat("en-us", options).format(localDate);
-
+  const now = new Date();
   // /////////////////////////////
+  let matchMinute = "";
+  if (data.status === "IN_PLAY") {
+    const diffInMs = now - localDate;
+    const diffInMinutes = Math.floor(diffInMs / 60000);
+
+    matchMinute = `${diffInMinutes + 1}`;
+  }
+
+  // ///////////////////////////////////
 
   const homeGoals = data.score.fullTime.home;
   const awayGoals = data.score.fullTime.away;
@@ -79,7 +88,7 @@ const renderUi = function (data) {
         </div>
         <div>
             <span style="color: #6366f1;">⏰</span>
-            <span>${textStatus}: ${date}</span>
+            <span>${textStatus} <span class="min">${matchMinute}</span>></span>
         </div>
     </div>
 </div>
