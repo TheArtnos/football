@@ -105,7 +105,7 @@ const getMatch = function () {
     .then((res) => res.json())
     .then((data) => {
       data.matches.forEach((games) => {
-        consloe.log(games)
+        console.log(games)
         renderUi(games);
       });
     });
