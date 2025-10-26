@@ -15,8 +15,8 @@ const renderUi = function (data) {
   const homeGoals = data.score.fullTime.home;
   const awayGoals = data.score.fullTime.away;
 
-  const goalAway = awayGoals === true ? homeGoals : "0";
-  const goalHome = homeGoals === true ? homeGoals : "0";
+  const goalAway = awayGoals === true ? homeGoals : "";
+  const goalHome = homeGoals === true ? homeGoals : "";
   const scoreText =
     homeGoals === null || awayGoals === null
       ? date
