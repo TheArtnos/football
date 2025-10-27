@@ -115,14 +115,12 @@ const getMatchByDate = function () {
   dateText.textContent = dateFromStr;
   // get data from api
 
-  fetch("/api/matches.js")
+  fetch(`/api/matches.js?dateFrom=${dateFromStr}&dateTo=${dateToStr}`)
     .then((res) => res.json())
     .then((data) => {
       data.matches.forEach((games) => {
         renderUi(games);
       });
-
-      console.log(data);
     });
 };
 getMatchByDate();
