@@ -108,7 +108,7 @@ const renderGroupedMatches = function (matchs) {
 
   matchs.forEach((match) => {
     const leagueName = match.competition.name;
-    const logo = matchs.competition.emblem;
+    const logo = match.competition.emblem;
 
     if (!grouped[leagueName]) {
       grouped[leagueName] = {
