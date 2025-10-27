@@ -240,7 +240,7 @@
     }
     
     /* FIX: Revert .min to look like standard text in mobile meta section */
-   /* .min {
+    .min {
       background-color: transparent; /* Remove background */
       padding: 0; /* Remove padding */
       border-radius: 0; /* Remove border-radius */
@@ -249,7 +249,89 @@
       font-weight: 700; /* Keep it bold */
       margin-left: 4px;
     }
-  */
+    
+  }
+  /* --- New Styles for Date Navigation --- */
+  
+  /* Update header to use flexbox properly for the new layout */
+  header {
+    flex-direction: column; /* Stack Title/Subtitle and Date Selector */
+    align-items: center; /* Center everything horizontally */
+    margin-bottom: 30px; 
+    padding-bottom: 20px;
+  }
+  
+  header > div:first-child {
+      text-align: center;
+      margin-bottom: 25px;
+  }
+
+  .date-selector-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Space between elements */
+    width: 100%;
+    max-width: 450px; /* Limit width on desktop */
+    background-color: var(--card); /* Match card background */
+    border-radius: 16px;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .date-nav-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--accent);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%; /* Circular button */
+    transition: background-color 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Prevents shrinking */
+  }
+
+  .date-nav-btn:hover:not(:disabled) {
+    background-color: rgba(99, 102, 241, 0.15);
+    transform: scale(1.05);
+  }
+  
+  .date-nav-btn:disabled {
+      color: var(--muted);
+      cursor: not-allowed;
+      opacity: 0.5;
+  }
+
+  .date-nav-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 3;
+  }
+
+  .current-date-display {
+    flex-grow: 1;
+    text-align: center;
+    padding: 8px 15px;
+  }
+
+  .date-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  
+  /* Mobile adjustment for smaller buttons */
+  @media (max-width: 480px) {
+    .date-text {
+        font-size: 16px;
+    }
+    
+    .date-nav-btn svg {
+        width: 20px;
+        height: 20px;
+    }
   }
 </style>
   </head>
@@ -260,7 +342,21 @@
           <h1>Today's Matches</h1>
           <div class="sub">Live football matches and results from around the globe</div>
         </div>
-      </header>
+        
+        <div class="date-selector-container">
+            <button class="date-nav-btn next-day" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            
+            <div class="current-date-display">
+                <span class="date-text"></span>
+            </div>
+            
+            <button class="date-nav-btn prev-day">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+        </div>
+        </header>
 
       <div class="card">
         

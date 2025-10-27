@@ -1,5 +1,8 @@
 const gameList = document.querySelector(".card");
 const score = document.querySelector(".score");
+const prevDay = document.querySelector(".prev-day");
+const nextDay = document.querySelector(".next-day");
+const dateText = document.querySelector(".date-text");
 
 const renderUi = function (data) {
   const utcData = data.utcDate;
@@ -10,14 +13,14 @@ const renderUi = function (data) {
   };
   const date = new Intl.DateTimeFormat("en-us", options).format(localDate);
   const now = new Date();
+
   // /////////////////////////////
   let matchMinute = "";
-  let liveMinuteCalculation = "";
   if (data.status === "IN_PLAY") {
     const diffInMs = now - localDate;
     const diffInMinutes = Math.floor(diffInMs / 60000);
 
-    liveMinuteCalculation = `${diffInMinutes}'`;
+    matchMinute = `${diffInMinutes}'`;
   }
 
   // ///////////////////////////////////
@@ -25,9 +28,8 @@ const renderUi = function (data) {
   const homeGoals = data.score.fullTime.home;
   const awayGoals = data.score.fullTime.away;
 
-  const goalAway = awayGoals ?  awayGoals : "0";
-   const goalHome = homeGoals ? homeGoals : "0";
-
+  const goalAway = awayGoals ? awayGoals : "0";
+  const goalHome = homeGoals ? homeGoals : "0";
   const scoreText =
     homeGoals === null || awayGoals === null
       ? date
@@ -39,23 +41,18 @@ const renderUi = function (data) {
   switch (statusGame) {
     case "IN_PLAY":
       textStatus = "Live";
-      matchMinute = liveMinuteCalculation;
       break;
     case "PAUSED":
       textStatus = "HT"; // Half Time
-      matchMinute = 45
       break;
     case "TIMED":
       textStatus = "Not Started";
-      matchMinute = ""
       break;
     case "FINISHED":
       textStatus = "FT"; // Full Time
-      matchMinute = ""
       break;
     default:
       textStatus = "Unknown";
-      matchMinute = ""
   }
 
   /////////////////////////////////
@@ -105,21 +102,48 @@ const renderUi = function (data) {
 const clearGames = () => {
   gameList.innerHTML = "";
 };
-const getMatch = function () {
-  clearGames();
+
+let currentDate = new Date();
+const today = new Date();
+const getMatchByDate = function () {
+  // get date
+  const dateFromStr = currentDate.toISOString().split("T")[0];
+  const tomorrow = new Date(currentDate + 1);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const dateToStr = tomorrow.toISOString().split("T")[0];
+  //  display date
+  dateText.textContent = dateFromStr;
+  // get data from api
+
   fetch("/api/matches.js")
-    .then((res) => {
-      console.log(res);
-      return res.json();
-    })
+    .then((res) => res.json())
     .then((data) => {
-      console.log(data);
-      
       data.matches.forEach((games) => {
-        console.log(games)
         renderUi(games);
       });
+
+      console.log(data);
     });
 };
-getMatch();
-setInterval(getMatch, 60000);
+getMatchByDate();
+nextDay.disabled = true;
+
+prevDay.addEventListener("click", function () {
+  currentDate.setDate(currentDate.getDate() - 1);
+  clearGames();
+  getMatchByDate();
+  nextDay.disabled = false;
+});
+
+nextDay.addEventListener("click", function () {
+  const tempDate = new Date(currentDate);
+  tempDate.setDate(tempDate.getDate() + 1);
+
+  if (tempDate <= today) {
+    currentDate = tempDate;
+    getMatchByDate();
+    clearGames();
+  }
+  if (currentDate.toDateString() === today.toDateString())
+    nextDay.disabled = true;
+});
