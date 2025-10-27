@@ -108,7 +108,7 @@ const today = new Date();
 const getMatchByDate = function () {
   // get date
   const dateFromStr = currentDate.toISOString().split("T")[0];
-  const tomorrow = new Date(currentDate + 1);
+  const tomorrow = new Date(currentDate);
   tomorrow.setDate(tomorrow.getDate() + 1);
   const dateToStr = tomorrow.toISOString().split("T")[0];
   //  display date
