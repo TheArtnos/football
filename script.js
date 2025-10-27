@@ -128,9 +128,9 @@ const renderGroupedMatches = function (matchs) {
            <h2 style="color: #fff">${league}</h2>
        </div>
     `;
-    console.log(league);
+    console.log([league]);
 
-    // gameList.insertAdjacentHTML("beforeend", leagueHeader);
+     gameList.insertAdjacentHTML("beforeend", leagueHeader);
 
     grouped[league].matches.forEach((match) => {
       renderUi(match);
