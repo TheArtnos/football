@@ -103,6 +103,36 @@ const clearGames = () => {
   gameList.innerHTML = "";
 };
 
+const renderGroupedMatches = function (matchs) {
+  const grouped = {};
+
+  matchs.forEach((match) => {
+    const leagueName = match.competition.name;
+    const logo = matchs.competition.emblem;
+
+    if (!grouped[leagueName]) {
+      grouped[leagueName] = {
+        logo: logo,
+        matches: [],
+      };
+    }
+    grouped[leagueName].push(match);
+  });
+  for (const league in grouped) {
+    const leagueHeader = `
+       <h2 style="color: #fff"> ${league}</h2>
+
+    `;
+    console.log(leagueHeader);
+
+    // gameList.insertAdjacentHTML("beforeend", leagueHeader);
+
+    grouped[league].forEach((match) => {
+      renderUi(match);
+    });
+  }
+};
+
 let currentDate = new Date();
 const today = new Date();
 const getMatchByDate = function () {
@@ -117,10 +147,11 @@ const getMatchByDate = function () {
 
   fetch(`/api/matches.js?dateFrom=${dateFromStr}&dateTo=${dateToStr}`)
     .then((res) => res.json())
-    .then((data) => {
-      data.matches.forEach((games) => {
-        renderUi(games);
-      });
+   .then((data) => {
+      console.log(data.matches);
+
+      clearGames();
+      renderGroupedMatches(data.matches);
     });
 };
 getMatchByDate();
