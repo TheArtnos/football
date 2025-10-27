@@ -128,7 +128,6 @@ const renderGroupedMatches = function (matchs) {
            <h2 style="color: #fff">${league}</h2>
        </div>
     `;
-    console.log([league]);
 
      gameList.insertAdjacentHTML("beforeend", leagueHeader);
 
@@ -153,7 +152,7 @@ const getMatchByDate = function () {
   fetch(`/api/matches.js?dateFrom=${dateFromStr}&dateTo=${dateToStr}`)
     .then((res) => res.json())
    .then((data) => {
-      console.log(data.matches);
+
 
       clearGames();
       renderGroupedMatches(data.matches);
