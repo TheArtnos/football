@@ -138,7 +138,6 @@ const renderGroupedMatches = function (matchs) {
 };
 
 let currentDate = new Date();
-const today = new Date();
 const getMatchByDate = function () {
   // get date
   const dateFromStr = currentDate.toISOString().split("T")[0];
@@ -168,15 +167,11 @@ prevDay.addEventListener("click", function () {
   nextDay.disabled = false;
 });
 
+
 nextDay.addEventListener("click", function () {
   const tempDate = new Date(currentDate);
   tempDate.setDate(tempDate.getDate() + 1);
-
-  if (tempDate <= today) {
-    currentDate = tempDate;
-    getMatchByDate();
-    clearGames();
-  }
-  if (currentDate.toDateString() === today.toDateString())
-    nextDay.disabled = true;
+  currentDate = tempDate;
+  getMatchByDate();
+  clearGames();
 });
