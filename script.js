@@ -127,7 +127,7 @@ const renderGroupedMatches = function (matchs) {
 
     // gameList.insertAdjacentHTML("beforeend", leagueHeader);
 
-    grouped[league].forEach((match) => {
+    grouped[league].matches.forEach((match) => {
       renderUi(match);
     });
   }
