@@ -333,6 +333,50 @@
         height: 20px;
     }
   }
+  /* --- LEAGUE HEADER CONTAINER --- */
+.league-header {
+    /* 1. Enable Flexbox to align items horizontally */
+    display: flex; 
+    
+    /* 2. Vertically center the logo and text */
+    align-items: center; 
+    
+    /* 3. Add some space/padding around the entire header */
+    padding: 10px 15px;
+    
+    /* 4. Optional: Set a background color/border to distinguish it from matches */
+    background-color: #1f2937; /* A dark color to contrast the white text */
+    border-radius: 6px;
+    margin-top: 25px; /* Space above the first league header */
+    margin-bottom: 5px; /* Small space before the first match card */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* --- LEAGUE LOGO STYLES --- */
+.league-header .league-logo {
+    /* Set a fixed size for the logo */
+    width: 30px;
+    height: 30px; 
+    
+    /* Add space between the logo and the league name */
+    margin-right: 12px; 
+    
+    /* Ensure image quality when resized (optional) */
+    object-fit: contain; 
+}
+
+/* --- LEAGUE NAME STYLES --- */
+.league-header h2 {
+    /* Remove default margin from h2 for clean alignment */
+    margin: 0; 
+    
+    /* Make the text stand out */
+    font-size: 1.2rem;
+    font-weight: 600;
+    
+    /* You already have color: #fff inline, but for completeness: */
+    color: #fff;
+}
 </style>
   </head>
   <body>
