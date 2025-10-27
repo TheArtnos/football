@@ -116,7 +116,7 @@ const renderGroupedMatches = function (matchs) {
         matches: [],
       };
     }
-    grouped[leagueName].push(match);
+    grouped[leagueName].matches.push(match);
   });
   for (const league in grouped) {
     const leagueHeader = `
