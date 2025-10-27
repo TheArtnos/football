@@ -158,13 +158,11 @@ const getMatchByDate = function () {
     });
 };
 getMatchByDate();
-nextDay.disabled = true;
 
 prevDay.addEventListener("click", function () {
   currentDate.setDate(currentDate.getDate() - 1);
   clearGames();
   getMatchByDate();
-  nextDay.disabled = false;
 });
 
 
