@@ -119,11 +119,16 @@ const renderGroupedMatches = function (matchs) {
     grouped[leagueName].matches.push(match);
   });
   for (const league in grouped) {
-    const leagueHeader = `
-       <h2 style="color: #fff"> ${league}</h2>
 
+    
+    const leagueLogo = grouped[league].logo;
+    const leagueHeader = `
+       <div class="league-header">
+           <img src="${leagueLogo}" alt="${league} Logo" class="league-logo" />
+           <h2 style="color: #fff">${league}</h2>
+       </div>
     `;
-    console.log(leagueHeader);
+    console.log(league);
 
     // gameList.insertAdjacentHTML("beforeend", leagueHeader);
 
