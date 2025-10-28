@@ -143,7 +143,14 @@ const getMatchByDate = function () {
     day: "2-digit",
     month: "short",
   });
-
+  const statusOrder = {
+    IN_PLAY: 1,
+    PAUSED: 2,
+    TIMED: 3,
+    FINISHED: 4,
+    POSTPONED: 5,
+    CANCELLED: 6,
+  };
   // get data from api
   fetch(`/api/matches.js?dateFrom=${dateFromStr}&dateTo=${dateToStr}`)
     .then((res) => {
@@ -153,6 +160,13 @@ const getMatchByDate = function () {
     .then((data) => {
       if (!data.matches) throw new Error("No matches found");
       clearGames();
+      data.matches.sort((a, b) => {
+        statusOrder[a.status] - statusOrder[b.status];
+        const orderA = statusOrder[a.status] ?? 999;
+        const orderB = statusOrder[b.status] ?? 999;
+
+        return orderA - orderB;
+      });
       renderGroupedMatches(data.matches);
     })
     .catch((err) => {
