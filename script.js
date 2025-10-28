@@ -12,24 +12,13 @@ const renderUi = function (data) {
     minute: "2-digit",
   };
   const date = new Intl.DateTimeFormat("en-us", options).format(localDate);
-  const now = new Date();
-
-  // /////////////////////////////
-  let matchMinute = "";
-  if (data.status === "IN_PLAY") {
-    const diffInMs = now - localDate;
-    const diffInMinutes = Math.floor(diffInMs / 60000);
-
-    matchMinute = `${diffInMinutes}'`;
-  }
-
-  // ///////////////////////////////////
 
   const homeGoals = data.score.fullTime.home;
   const awayGoals = data.score.fullTime.away;
 
-  const goalAway = awayGoals ? awayGoals : "0";
-  const goalHome = homeGoals ? homeGoals : "0";
+  const goalAway = awayGoals ?? "0";
+  const goalHome = homeGoals ?? "0";
+
   const scoreText =
     homeGoals === null || awayGoals === null
       ? date
@@ -38,28 +27,34 @@ const renderUi = function (data) {
   const statusGame = data.status;
 
   let textStatus;
+  let bgColor;
   switch (statusGame) {
     case "IN_PLAY":
       textStatus = "Live";
+      bgColor = "#22c55e";
       break;
     case "PAUSED":
       textStatus = "HT"; // Half Time
+      bgColor = "#facc15";
       break;
     case "TIMED":
+      bgColor = "#ef4444";
       textStatus = "Not Started";
       break;
     case "FINISHED":
-      textStatus = "FT"; // Full Time
+      textStatus = "FullTime";
+      bgColor = "#6b7280";
       break;
     default:
       textStatus = "Unknown";
+      bgColor = "#9ca3af";
   }
 
   /////////////////////////////////
   const html = `
        <div class="match">
     <div class="match-status" 
-         style="background-color: #ef4444; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);">
+         style="background-color: ${bgColor}">
         ${textStatus}
     </div>
     
@@ -92,7 +87,7 @@ const renderUi = function (data) {
         </div>
         <div>
             <span style="color: #6366f1;">⏰</span>
-            <span>${textStatus} <span class="min">${matchMinute}</span></span>
+            <span>${textStatus} <span class="min"></span></span>
         </div>
     </div>
 </div>
@@ -119,8 +114,6 @@ const renderGroupedMatches = function (matchs) {
     grouped[leagueName].matches.push(match);
   });
   for (const league in grouped) {
-
-    
     const leagueLogo = grouped[league].logo;
     const leagueHeader = `
        <div class="league-header">
@@ -129,7 +122,7 @@ const renderGroupedMatches = function (matchs) {
        </div>
     `;
 
-     gameList.insertAdjacentHTML("beforeend", leagueHeader);
+    gameList.insertAdjacentHTML("beforeend", leagueHeader);
 
     grouped[league].matches.forEach((match) => {
       renderUi(match);
@@ -145,16 +138,25 @@ const getMatchByDate = function () {
   tomorrow.setDate(tomorrow.getDate() + 1);
   const dateToStr = tomorrow.toISOString().split("T")[0];
   //  display date
-  dateText.textContent = dateFromStr;
+  dateText.textContent = currentDate.toLocaleDateString("en-GB", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+  });
+
   // get data from api
-
   fetch(`/api/matches.js?dateFrom=${dateFromStr}&dateTo=${dateToStr}`)
-    .then((res) => res.json())
-   .then((data) => {
-
-
+    .then((res) => {
+      if (!res.ok) throw new Error(`Error in coonection (${res.status})`);
+      return res.json();
+    })
+    .then((data) => {
+      if (!data.matches) throw new Error("No matches found");
       clearGames();
       renderGroupedMatches(data.matches);
+    })
+    .catch((err) => {
+      gameList.innerHTML = `<p class="error">⚠️ ${err.message}</p>`;
     });
 };
 getMatchByDate();
@@ -165,11 +167,10 @@ prevDay.addEventListener("click", function () {
   getMatchByDate();
 });
 
-
 nextDay.addEventListener("click", function () {
   const tempDate = new Date(currentDate);
   tempDate.setDate(tempDate.getDate() + 1);
   currentDate = tempDate;
-  getMatchByDate();
   clearGames();
+  getMatchByDate();
 });
