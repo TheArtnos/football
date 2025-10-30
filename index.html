@@ -376,6 +376,65 @@
     /* You already have color: #fff inline, but for completeness: */
     color: #fff;
 }
+/* 🔴 Offline Card */
+.offline-card,
+.online-card {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 9999;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  max-width: 260px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  transform: translateX(-120%);
+  opacity: 0;
+  transition: transform .35s ease, opacity .35s ease;
+}
+
+/* Offline style */
+.offline-card {
+  background: rgba(255, 77, 77, 0.15);
+  border: 1px solid rgba(255, 77, 77, 0.6);
+  backdrop-filter: blur(6px);
+  color: #ffbaba;
+}
+
+/* ✅ Online style */
+.online-card {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.6);
+  backdrop-filter: blur(6px);
+  color: #bbf7d0;
+}
+
+/* Show offline card */
+body.offline .offline-card {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Show online card */
+body.online .online-card {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .offline-card,
+  .online-card {
+    font-size: 12px;
+    padding: 10px 14px;
+    max-width: 200px;
+  }
+}
+
 </style>
   </head>
   <body>
@@ -405,6 +464,9 @@
         
         
     </div>
+      <div class="online-card">✅ You are back online!</div>
+      <div class="offline-card">⚠️ You are offline. Check connection.</div>
+
     <script src="script.js"></script>
   </body>
 </html>

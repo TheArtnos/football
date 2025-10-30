@@ -185,3 +185,18 @@ nextDay.addEventListener("click", function () {
   clearGames();
   getMatchByDate();
 });
+
+window.addEventListener("online", function () {
+  document.body.classList.remove("offline");
+  document.body.classList.add("online");
+  console.log("onilne");
+
+  if (document.body.classList.contains("online")) {
+    setTimeout(() => document.body.classList.remove("online"), 3000);
+  }
+});
+window.addEventListener("offline", function () {
+  document.body.classList.remove("online");
+  document.body.classList.add("offline");
+  console.log("offline");
+});
