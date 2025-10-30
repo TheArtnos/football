@@ -51,7 +51,7 @@ const renderUi = function (data) {
   }
 
   /////////////////////////////////
-  const html = `
+  return `
        <div class="match">
     <div class="match-status" 
          style="background-color: ${bgColor}">
@@ -92,7 +92,6 @@ const renderUi = function (data) {
     </div>
 </div>
             `;
-  gameList.insertAdjacentHTML("beforeend", html);
 };
 const clearGames = () => {
   gameList.innerHTML = "";
@@ -100,11 +99,11 @@ const clearGames = () => {
 
 const renderGroupedMatches = function (matchs) {
   const grouped = {};
+  let html = "";
 
   matchs.forEach((match) => {
     const leagueName = match.competition.name;
     const logo = match.competition.emblem;
-
     if (!grouped[leagueName]) {
       grouped[leagueName] = {
         logo: logo,
@@ -115,19 +114,18 @@ const renderGroupedMatches = function (matchs) {
   });
   for (const league in grouped) {
     const leagueLogo = grouped[league].logo;
-    const leagueHeader = `
+    html += `
        <div class="league-header">
            <img src="${leagueLogo}" alt="${league} Logo" class="league-logo" />
            <h2 style="color: #fff">${league}</h2>
        </div>
     `;
 
-    gameList.insertAdjacentHTML("beforeend", leagueHeader);
-
     grouped[league].matches.forEach((match) => {
-      renderUi(match);
+      html += renderUi(match);
     });
   }
+  gameList.innerHTML = html;
 };
 
 let currentDate = new Date();
@@ -161,7 +159,6 @@ const getMatchByDate = function () {
       if (!data.matches) throw new Error("No matches found");
       clearGames();
       data.matches.sort((a, b) => {
-        statusOrder[a.status] - statusOrder[b.status];
         const orderA = statusOrder[a.status] ?? 999;
         const orderB = statusOrder[b.status] ?? 999;
 
