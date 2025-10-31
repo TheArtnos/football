@@ -1,387 +1,247 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Today's Matches</title>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>مسابقات امروز</title>
 <style>
-  :root {
-    /* Adjusted Variables for better contrast and vibrancy */
-    --bg: #0d121c; /* Darker background */
-    --card: #181f2a; /* Slightly darker card */
-    --accent: #6366f1; /* Brighter accent blue/purple */
-    --muted: #aab5c7; /* Lighter mute for better readability */
-    --text: #ffffff; /* Pure white text for max contrast */
-    --success: #10b981; /* Green for Live/Finished */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  }
+:root {
+  --bg: #0d121c;
+  --card: #181f2a;
+  --accent: #6366f1;
+  --muted: #aab5c7;
+  --text: #ffffff;
+  --success: #10b981;
+  font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
 
-  body {
-    margin: 0;
-    background: linear-gradient(180deg, var(--bg) 0%, #00040f 100%);
-    color: var(--text);
-    padding: 24px;
-    min-height: 100vh;
-  }
+body {
+  margin: 0;
+  background: linear-gradient(180deg, var(--bg) 0%, #00040f 100%);
+  color: var(--text);
+  padding: 24px;
+  min-height: 100vh;
+  direction: rtl;
+  text-align: right;
+}
 
-  .container {
-    max-width: 950px;
-    margin: auto;
-  }
+.container {
+  max-width: 950px;
+  margin: auto;
+}
 
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 40px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 20px;
-  }
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+}
 
-  .logo {
-    background: linear-gradient(135deg, var(--accent), #0ea5e9);
-    color: white;
-    font-weight: 900;
-    font-size: 24px;
-    padding: 10px 16px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.5);
-  }
+header > div:first-child {
+  text-align: center;
+  margin-bottom: 25px;
+}
 
-  h1 {
-    margin: 0;
-    font-size: 28px;
-    color: var(--text);
-    font-weight: 700;
-  }
+h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
 
-  .sub {
-    font-size: 15px;
-    color: var(--muted);
-  }
+.sub {
+  font-size: 15px;
+  color: var(--muted);
+}
 
-  .card {
-    background-color: var(--card);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
-  }
+.card {
+  background-color: var(--card);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+}
 
-  /* --- Match Component UX Improvements --- */
+.match {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: var(--card);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-  .match {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    background-color: var(--card);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-    position: relative;
-    transition: transform 0.2s ease, box-shadow 0.2s ease; 
-  }
-  
-  .match:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 0 2px var(--accent);
-  }
+.match:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 0 0 2px var(--accent);
+}
 
-  /* Status Indicator */
-  .match-status {
-    position: absolute;
-    top: -12px;
-    right: 20px;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: white;
-    background-color: var(--success);
-  }
-  
-  .teams {
-    display: flex;
-    align-items: center;
-    /* Use space-between to push teams to the edges */
-    justify-content: space-between; 
-    padding: 10px 0; 
-    flex-wrap: nowrap;
-  }
+.match-status {
+  position: absolute;
+  top: -12px;
+  left: 20px; /* برای RTL از راست به چپ تغییر کرد */
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: white;
+  background-color: var(--success);
+}
 
-  .team {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    /* Allows team 1 to stick to the left and team 2 to the right */
-    flex-grow: 0; 
-    min-width: 0; 
-    /* Ensure Team 1 is left-aligned */
-    justify-content: flex-start;
-  }
-  
-  .team:last-child {
-    /* Ensure Team 2 is right-aligned in its container */
-    justify-content: flex-end; 
-    /* Reverse the order of elements within Team 2 so the logo is on the right */
-    flex-direction: row-reverse;
-  }
-  
-  .team-name {
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 1.2;
-    /* Force text alignment inside the flex container for Team 2 */
-    text-align: right; 
-  }
-  
-  .team:first-child .team-name {
-      text-align: left;
-  }
+.teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  flex-wrap: nowrap;
+}
 
-  .team img {
-    width: 45px;
-    height: 45px;
-    object-fit: cover;
-    flex-shrink: 0;
-  }
+.team {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-grow: 0;
+  min-width: 0;
+  justify-content: flex-start;
+}
 
-  /* New: Centralized Score Display */
-  .score-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 120px; 
-  }
+.team:last-child {
+  flex-direction: row-reverse; /* برای RTL لوگو سمت راست باشد */
+  justify-content: flex-start; /* در RTL چپ به راست */
+}
 
-  .score {
-    font-size: 26px;
-    font-weight: 800;
-    color: #818cf8;
-    background-color: rgba(99, 102, 241, 0.1);
-    padding: 10px 18px;
-    border-radius: 12px;
-    text-align: center;
-    min-width: 90px;
-    box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
-  }
-  
-  .meta {
-    font-size: 14px;
-    color: var(--muted);
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 10px;
-    border-top: 1px dashed rgba(255, 255, 255, 0.05);
-  }
-  
-  .meta > div {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-  }
-  
-  /* FIX: Styling for the Match Minute Badge (Desktop/General) */
-  .min {
-      /* Subtle high-contrast badge */
-      background-color: var(--accent); 
-      color: var(--text);
-      font-weight: 700;
-      font-size: 13px;
-      padding: 2px 8px;
-      border-radius: 12px; 
-      margin-left: 4px; /* Space it out from the status text */
-  }
-  /* Hide the minute if it's empty (i.e., not a 'Live' match) */
-  .meta > div:nth-child(2) span:nth-child(2) .min:empty {
-      display: none;
-  }
+.team-name {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.2;
+  text-align: right;
+}
 
-  /* --- Mobile Optimization (Fixed Team Layout) --- */
+.team:first-child .team-name {
+  text-align: right;
+}
 
-  @media (max-width: 650px) {
-    
-    .teams {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 15px;
-    }
+.team img {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
 
-    /* Score remains at the top for clarity */
-    .score-container {
-        order: -1;
-        flex: 1 1 100%;
-        justify-content: center;
-        margin-bottom: 10px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    /* Team 1 and Team 2 are now both left-aligned in mobile view */
-    .team, .team:last-child {
-        justify-content: flex-start; 
-        flex-direction: row; /* Logo on the left for both */
-    }
-    
-    .team-name {
-        text-align: left; /* Ensure both names are left-aligned */
-    }
-    
-    /* Ensure meta is centered in mobile */
-    .meta {
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    /* FIX: Revert .min to look like standard text in mobile meta section */
-    .min {
-      background-color: transparent; /* Remove background */
-      padding: 0; /* Remove padding */
-      border-radius: 0; /* Remove border-radius */
-      color: var(--text); /* Make it stand out with text color */
-      font-size: 14px; /* Match surrounding text size */
-      font-weight: 700; /* Keep it bold */
-      margin-left: 4px;
-    }
-    
-  }
-  /* --- New Styles for Date Navigation --- */
-  
-  /* Update header to use flexbox properly for the new layout */
-  header {
-    flex-direction: column; /* Stack Title/Subtitle and Date Selector */
-    align-items: center; /* Center everything horizontally */
-    margin-bottom: 30px; 
-    padding-bottom: 20px;
-  }
-  
-  header > div:first-child {
-      text-align: center;
-      margin-bottom: 25px;
-  }
+.score-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 120px;
+}
 
-  .date-selector-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px; /* Space between elements */
-    width: 100%;
-    max-width: 450px; /* Limit width on desktop */
-    background-color: var(--card); /* Match card background */
-    border-radius: 16px;
-    padding: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  }
+.score {
+  font-size: 26px;
+  font-weight: 800;
+  color: #818cf8;
+  background-color: rgba(99,102,241,0.1);
+  padding: 10px 18px;
+  border-radius: 12px;
+  text-align: center;
+  min-width: 90px;
+  box-shadow: 0 2px 10px rgba(99,102,241,0.3);
+}
 
-  .date-nav-btn {
-    background-color: transparent;
-    border: none;
-    color: var(--accent);
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 50%; /* Circular button */
-    transition: background-color 0.2s, transform 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0; /* Prevents shrinking */
-  }
+.meta {
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255,255,255,0.05);
+}
 
-  .date-nav-btn:hover:not(:disabled) {
-    background-color: rgba(99, 102, 241, 0.15);
-    transform: scale(1.05);
-  }
-  
-  .date-nav-btn:disabled {
-      color: var(--muted);
-      cursor: not-allowed;
-      opacity: 0.5;
-  }
+.meta > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
-  .date-nav-btn svg {
-    width: 22px;
-    height: 22px;
-    stroke-width: 3;
-  }
+.min {
+  background-color: var(--accent);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 4px;
+}
 
-  .current-date-display {
-    flex-grow: 1;
-    text-align: center;
-    padding: 8px 15px;
-  }
+.date-selector-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 450px;
+  background-color: var(--card);
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
 
-  .date-text {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  
-  /* Mobile adjustment for smaller buttons */
-  @media (max-width: 480px) {
-    .date-text {
-        font-size: 16px;
-    }
-    
-    .date-nav-btn svg {
-        width: 20px;
-        height: 20px;
-    }
-  }
-  /* --- LEAGUE HEADER CONTAINER --- */
+.date-nav-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.current-date-display {
+  flex-grow: 1;
+  text-align: center;
+  padding: 8px 15px;
+}
+
+.date-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
 .league-header {
-    /* 1. Enable Flexbox to align items horizontally */
-    display: flex; 
-    
-    /* 2. Vertically center the logo and text */
-    align-items: center; 
-    
-    /* 3. Add some space/padding around the entire header */
-    padding: 10px 15px;
-    
-    /* 4. Optional: Set a background color/border to distinguish it from matches */
-    /* background-color: #1f2937; A dark color to contrast the white text */
-    border-radius: 6px;
-    margin-top: 25px; /* Space above the first league header */
-    margin-bottom: 5px; /* Small space before the first match card */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-top: 25px;
+  margin-bottom: 5px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-/* --- LEAGUE LOGO STYLES --- */
 .league-header .league-logo {
-    /* Set a fixed size for the logo */
-    width: 30px;
-    height: 30px; 
-    
-    /* Add space between the logo and the league name */
-    margin-right: 12px; 
-    
-    /* Ensure image quality when resized (optional) */
-    object-fit: contain; 
+  width: 30px;
+  height: 30px;
+  margin-left: 12px; /* برای RTL فاصله سمت چپ */
+  object-fit: contain;
 }
 
-/* --- LEAGUE NAME STYLES --- */
 .league-header h2 {
-    /* Remove default margin from h2 for clean alignment */
-    margin: 0; 
-    
-    /* Make the text stand out */
-    font-size: 1.2rem;
-    font-weight: 600;
-    
-    /* You already have color: #fff inline, but for completeness: */
-    color: #fff;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
 }
-/* 🔴 Offline Card */
+
+/* کارت آنلاین/آفلاین */
 .offline-card,
 .online-card {
   position: fixed;
   top: 16px;
-  left: 16px;
+  right: 16px; /* تغییر به سمت راست */
   z-index: 9999;
   padding: 12px 18px;
   border-radius: 8px;
@@ -391,42 +251,68 @@
   display: flex;
   align-items: center;
   gap: 6px;
-
-  transform: translateX(-120%);
+  transform: translateX(120%);
   opacity: 0;
   transition: transform .35s ease, opacity .35s ease;
 }
 
-/* Offline style */
-.offline-card {
-  background: rgba(255, 77, 77, 0.15);
-  border: 1px solid rgba(255, 77, 77, 0.6);
-  backdrop-filter: blur(6px);
-  color: #ffbaba;
-}
-
-/* ✅ Online style */
-.online-card {
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.6);
-  backdrop-filter: blur(6px);
-  color: #bbf7d0;
-}
-
-/* Show offline card */
-body.offline .offline-card {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-/* Show online card */
+body.offline .offline-card,
 body.online .online-card {
   transform: translateX(0);
   opacity: 1;
 }
+@media (max-width: 650px) {
+  .teams {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
 
-/* Responsive */
+  .score-container {
+    order: -1;
+    flex: 1 1 100%;
+    justify-content: center;
+    margin-bottom: 10px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .team, .team:last-child {
+    justify-content: flex-start;
+    flex-direction: row; /* لوگو سمت راست؟ بسته به RTL ممکنه نیاز به row-reverse باشد */
+  }
+
+  .team-name {
+    text-align: right;
+  }
+
+  .meta {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .min {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+    margin-left: 4px;
+  }
+}
+
 @media (max-width: 480px) {
+  .date-text {
+    font-size: 16px;
+  }
+  
+  .date-nav-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
   .offline-card,
   .online-card {
     font-size: 12px;
@@ -436,37 +322,26 @@ body.online .online-card {
 }
 
 </style>
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <div>
-          <h1>Today's Matches</h1>
-          <div class="sub">Live football matches and results from around the globe</div>
-        </div>
-        
-        <div class="date-selector-container">
-            <button class="date-nav-btn next-day">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
-            
-            <div class="current-date-display">
-                <span class="date-text"></span>
-            </div>
-            
-            <button class="date-nav-btn prev-day">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
-        </div>
-        </header>
+</head>
+<body>
+<div class="container">
+<header>
+  <div>
+    <h1>مسابقات امروز</h1>
+    <div class="sub">نتایج زنده فوتبال از سراسر جهان</div>
+  </div>
+  <div class="date-selector-container">
+    <button class="date-nav-btn next-day">❯</button>
+    <div class="current-date-display"><span class="date-text"></span></div>
+    <button class="date-nav-btn prev-day">❮</button>
+  </div>
+</header>
 
-      <div class="card">
-        
-        
-    </div>
-      <div class="online-card">✅ You are back online!</div>
-      <div class="offline-card">⚠️ You are offline. Check connection.</div>
+<div class="card"></div>
 
-    <script src="script.js"></script>
-  </body>
+<div class="online-card">✅ شما آنلاین هستید!</div>
+<div class="offline-card">⚠️ شما آفلاین هستید. اتصال را بررسی کنید.</div>
+
+<script defer src="script.js"></script>
+</body>
 </html>

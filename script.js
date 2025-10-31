@@ -4,6 +4,18 @@ const prevDay = document.querySelector(".prev-day");
 const nextDay = document.querySelector(".next-day");
 const dateText = document.querySelector(".date-text");
 
+// get data form json
+let fa = {};
+
+fetch("./fa.json")
+  .then((res) => res.json())
+  .then((data) => {
+    fa = data;
+    getMatchByDate();
+  });
+
+const t = (section, key) => fa[section][key] ?? key;
+
 const renderUi = function (data) {
   const utcData = data.utcDate;
   const localDate = new Date(utcData);
@@ -55,7 +67,7 @@ const renderUi = function (data) {
        <div class="match">
     <div class="match-status" 
          style="background-color: ${bgColor}">
-        ${textStatus}
+        ${t("statuses", data.status)}
     </div>
     
     <div class="teams">
@@ -64,7 +76,10 @@ const renderUi = function (data) {
                 src="${data.homeTeam.crest}"
                 alt="Logo"
             />
-            <div class="team-name">${data.homeTeam.shortName}  (<span style="color: #ef4444">${goalHome}</span>)</div>
+            <div class="team-name">${t(
+              "teams",
+              data.homeTeam.name
+            )}  (<span style="color: #ef4444">${goalHome}</span>)</div>
         </div>
         
         <div class="score-container">
@@ -76,18 +91,21 @@ const renderUi = function (data) {
                 src="${data.awayTeam.crest}"
                 alt="logo"
             />
-            <div class="team-name">${data.awayTeam.shortName}  (<span style="color: #ef4444">${goalAway}</span>)</div>
+            <div class="team-name">${t(
+              "teams",
+              data.awayTeam.name
+            )}  (<span style="color: #ef4444">${goalAway}</span>)</div>
         </div>
     </div>
     
     <div class="meta">
         <div>
             <span style="color: #6366f1;">🏆</span>
-            <span>${data.competition.name}</span>
+            <span>${t("competitions", data.competition.name)}</span>
         </div>
         <div>
             <span style="color: #6366f1;">⏰</span>
-            <span>${textStatus} <span class="min"></span></span>
+            <span>${t("statuses", data.status)}</span>
         </div>
     </div>
 </div>
@@ -117,7 +135,7 @@ const renderGroupedMatches = function (matchs) {
     html += `
        <div class="league-header">
            <img src="${leagueLogo}" alt="${league} Logo" class="league-logo" />
-           <h2 style="color: #fff">${league}</h2>
+           <h2 style="color: #fff">${t("competitions", league)}</h2>
        </div>
     `;
 
@@ -136,9 +154,9 @@ const getMatchByDate = function () {
   tomorrow.setDate(tomorrow.getDate() + 1);
   const dateToStr = tomorrow.toISOString().split("T")[0];
   //  display date
-  dateText.textContent = currentDate.toLocaleDateString("en-GB", {
+  dateText.textContent = currentDate.toLocaleDateString("fa-IR", {
     weekday: "short",
-    day: "2-digit",
+    day: "numeric",
     month: "short",
   });
   const statusOrder = {
@@ -149,6 +167,7 @@ const getMatchByDate = function () {
     POSTPONED: 5,
     CANCELLED: 6,
   };
+
   // get data from api
   fetch(`/api/matches.js?dateFrom=${dateFromStr}&dateTo=${dateToStr}`)
     .then((res) => {
@@ -170,7 +189,6 @@ const getMatchByDate = function () {
       gameList.innerHTML = `<p class="error">⚠️ ${err.message}</p>`;
     });
 };
-getMatchByDate();
 
 prevDay.addEventListener("click", function () {
   currentDate.setDate(currentDate.getDate() - 1);
