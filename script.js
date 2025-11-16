@@ -171,10 +171,12 @@ const getMatchByDate = function () {
   // get data from api
   fetch(`/api/matches.js?dateFrom=${dateFromStr}&dateTo=${dateToStr}`)
     .then((res) => {
-      if (!res.ok) throw new Error(`Error in coonection (${res.status})`);
+      if (!res.ok) throw new Error(`مشکل در اتصال به سرور (${res.status})`);
       return res.json();
     })
     .then((data) => {
+      console.log(data);
+
       if (!data.matches) throw new Error("No matches found");
       clearGames();
       data.matches.sort((a, b) => {
@@ -183,10 +185,12 @@ const getMatchByDate = function () {
 
         return orderA - orderB;
       });
+      if (data.resultSet.count === 0)
+        throw new Error("مسابقه ای برای امروز یافت نشد !");
       renderGroupedMatches(data.matches);
     })
     .catch((err) => {
-      gameList.innerHTML = `<p class="error">⚠️ ${err.message}</p>`;
+      gameList.innerHTML = `<p class="error"> ${err.message}</p>`;
     });
 };
 
